@@ -24,20 +24,20 @@ namespace APPSERVICE.Controllers
 
         [HttpGet]
         [Route("getcustomer/{lang}")]
-        public async Task<IActionResult> GetCustomer(string _lang)
+        public async Task<IActionResult> GetCustomer(string lang)
         {
             ResponseWithModel<List<CustomerModel>> response;
             try
             {
-                _lang = !string.IsNullOrEmpty(_lang) ? _lang.ToLower() : "th";
+                lang = !string.IsNullOrEmpty(lang) ? lang.ToLower() : "th";
 
                 var dbo_customer = await _customerRepo.GetCustomer();
                 List<CustomerModel> customers = (from dbo in dbo_customer
                                                  select new CustomerModel
                                                  {
                                                      CustomerID = dbo.CustomerID,
-                                                     FirstName = _lang == "th" ? dbo.FirstName_TH : dbo.FirstName_EN,
-                                                     LastName = _lang == "th" ? dbo.LastName_TH : dbo.LastName_EN,
+                                                     FirstName = lang == "th" ? dbo.FirstName_TH : dbo.FirstName_EN,
+                                                     LastName = lang == "th" ? dbo.LastName_TH : dbo.LastName_EN,
                                                      Age = dbo.Age,
                                                      Email = dbo.Email,
                                                      MobileNo = dbo.MobileNo
@@ -67,14 +67,14 @@ namespace APPSERVICE.Controllers
 
         [HttpGet]
         [Route("getcustomerdetail/{id}/{lang}")]
-        public async Task<IActionResult> GetCustomerDetail(int _id, string _lang)
+        public async Task<IActionResult> GetCustomerDetail(int id, string lang)
         {
             ResponseWithModel<CustomerModel> response;
             try
             {
-                _lang = !string.IsNullOrEmpty(_lang) ? _lang.ToLower() : "th";
+                lang = !string.IsNullOrEmpty(lang) ? lang.ToLower() : "th";
 
-                var dbo_customer = await _customerRepo.GetCustomerByID(_id);
+                var dbo_customer = await _customerRepo.GetCustomerByID(id);
                 if (dbo_customer is null || dbo_customer.CustomerID == 0)
                 {
                     response = new ResponseWithModel<CustomerModel>
@@ -89,8 +89,8 @@ namespace APPSERVICE.Controllers
                 CustomerModel customer = new CustomerModel
                 {
                     CustomerID = dbo_customer.CustomerID,
-                    FirstName = _lang == "th" ? dbo_customer.FirstName_TH : dbo_customer.FirstName_EN,
-                    LastName = _lang == "th" ? dbo_customer.LastName_TH : dbo_customer.LastName_EN,
+                    FirstName = lang == "th" ? dbo_customer.FirstName_TH : dbo_customer.FirstName_EN,
+                    LastName = lang == "th" ? dbo_customer.LastName_TH : dbo_customer.LastName_EN,
                     Age = dbo_customer.Age,
                     Email = dbo_customer.Email,
                     MobileNo = dbo_customer.MobileNo
